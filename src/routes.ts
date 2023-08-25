@@ -6,4 +6,4 @@ router.get('/teste', (req: Request, res: Response) =>{
     throw new Error("Erro ao fazer requisição!")
 })
 
-export {router};
+export {router}; 

@@ -10,15 +10,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 //create migration: yarn prisma migrate dev
-model User{
-  id String @id @default(uuid())
-  name String
-  password String
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  password   String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
   @@map("users")
+}
 
+model Category {
+  id         String    @id @default(uuid())
+  name       String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  product    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String
+  price       String
+  description String
+  Banner      String
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @default(now())
+  category    Category  @relation(fields: [category_id], references: [id])
+  category_id String
+  Items       Item[]
+  
+  @@map("products")
+}
+
+model Order {
+  id         String    @id @default(uuid())
+  name       String?
+  table      Int
+  status     Boolean   @default(false)
+  draft      Boolean   @default(true)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  item       Item[]
+
+  @@map("orders")
+}
+
+model Item {
+  id         String    @id @default(uuid())
+  amount     Int
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  order      Order     @relation(fields: [order_id], references: [id])
+  product    Product   @relation(fields: [product_id], references: [id])
+  order_id   String
+  product_id String
+
+  @@map("items")
 }

@@ -4,22 +4,29 @@ interface CategoryRequest {
   name: string;
 }
 
-
 class CreateCategoryService {
-  async execute({name}: CategoryRequest) {
-    if(!name){
-      throw new Error("category name invalid")
+  async execute({ name }: CategoryRequest) {
+    if (!name) {
+      throw new Error("category name invalid");
+    }
+    const categoryAlreadyExists = await prismaClient.category.findFirst({
+      where: {
+        name: name,
+      },
+    });
+    if (categoryAlreadyExists) {
+      throw new Error("category name already exists");
     }
     const category = await prismaClient.category.create({
-      data:{
-        name:name
+      data: {
+        name: name,
       },
-      select:{
-        name:true,
-        id:true
-      }
-    })
-    console.log("category created é: ", category)
+      select: {
+        name: true,
+        id: true,
+      },
+    });
+    console.log("category created é: ", category);
     return { category };
   }
 }

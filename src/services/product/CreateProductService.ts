@@ -23,6 +23,14 @@ class CreateProductService {
     if (!category_id) {
       throw new Error("Invalid category");
     }
+    const productNameAlreadyExists = await prismaClient.product.findFirst({
+      where:{
+        name: name
+      }
+    })
+    if(productNameAlreadyExists){
+      throw new Error("product name already exists.")
+    }
     const product = await prismaClient.product.create({
       data: {
         name: name,

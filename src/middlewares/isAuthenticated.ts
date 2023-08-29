@@ -24,6 +24,10 @@ export function isAuthenticated(
     const { sub } = verify(token, process.env.JWT_SECRET) as Payload;
 
     console.log(sub);
+    console.log("linha 27 do is auythenticated")
+    req.user_id = sub;
+    console.log("user id é : ", req.user_id)
+
     return next();
   } catch (error) {
     res.status(401).end();

@@ -4,6 +4,7 @@ interface ProductRequest {
   name: string;
   price: string;
   description: string;
+  banner: string;
   category_id: string;
 }
 class CreateProductService {
@@ -11,6 +12,7 @@ class CreateProductService {
     name,
     price,
     description,
+    banner,
     category_id,
   }: ProductRequest) {
     const category = await prismaClient.category.findFirst({
@@ -18,16 +20,9 @@ class CreateProductService {
         id: category_id,
       },
     });
-    if (category_id) {
-      throw new Error("Invalid category");
-    }
-    const productNameAlreadyExists = await prismaClient.product.findFirst({
-      where:{
-        name: name
-      }
-    })
-    if(productNameAlreadyExists){
-      throw new Error("product name already exists.")
+    if (!category) {
+      throw new Error("invalid category for product");
+      
     }
     const product = await prismaClient.product.create({
       data: {
@@ -37,13 +32,8 @@ class CreateProductService {
         banner: banner,
         category_id: category_id,
       },
-      select: {
-        name: true,
-        price: true,
-        description: true,
-        category_id: true,
-      },
     });
+
     return product;
   }
 }

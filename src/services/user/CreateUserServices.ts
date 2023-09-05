@@ -34,7 +34,6 @@ class CreateUserService {
         name: true
       }
     })
-    console.log(user)
     return user;
   }
 }

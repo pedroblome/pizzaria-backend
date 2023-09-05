@@ -12,7 +12,6 @@ class DetailUserService{
                 email:true
             }
         })
-        console.log(user)
         return {user}
     }
 }

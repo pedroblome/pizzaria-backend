@@ -26,8 +26,7 @@ class CreateCategoryService {
         id: true,
       },
     });
-    console.log("category created é: ", category);
-    return { category };
+    return category ;
   }
 }
 

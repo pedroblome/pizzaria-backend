@@ -6,12 +6,19 @@ interface RemoveItemRequest {
 
 class RemoveItemService {
   async execute({ item_id }: RemoveItemRequest) {
-    const itemDeleted = await prismaClient.item.delete({
-      where: {
-        id: item_id,
-      },
-    });
-    return itemDeleted;
+
+
+    try{
+      const itemDeleted = await prismaClient.item.delete({
+        where: {
+          id: item_id,
+        },
+      });
+      return itemDeleted;
+    }
+    catch{
+      throw new Error("Error in delete item")
+    }
   }
 }
 

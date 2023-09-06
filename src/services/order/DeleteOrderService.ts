@@ -6,12 +6,16 @@ interface DeleteOrderRequest {
 
 class DeleteOrderService {
   async execute({ id }: DeleteOrderRequest) {
-    const orderDeleted = await prismaClient.order.delete({
-      where: {
-        id: id,
-      },
-    });
-    return orderDeleted;
+    try {
+      const orderDeleted = await prismaClient.order.delete({
+        where: {
+          id: id,
+        },
+      });
+      return orderDeleted;
+    } catch (error) {
+      throw new Error("Error in delete order")
+    }
   }
 }
 
